@@ -202,4 +202,8 @@ jobs:
     ignore-pr-updates: # optional, default is 
     # Only the issues or the pull requests with an assignee will be marked as stale automatically.
     include-only-assigned: # optional, default is false
+                      - name: GitHub Action for JS Bundle Size
+  # You may pin to the exact commit or the version.
+  # uses: mikeal/bundle-size-action@a2055271c672d7aa232c6c02957df515cf5c2cc5
+  uses: mikeal/bundle-size-action@1.0.0
           
