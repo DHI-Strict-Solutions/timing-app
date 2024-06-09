@@ -1,0 +1,10 @@
+{
+    "mongoURI": "mongodb://localhost:27017/timing-app",
+    "jwtSecret": "d3b9dcd5ccd6a74da1fe36d5c13ddbf29c7a608ef63e07b6",
+    "email": {
+      "username": "ian@rds.aero",
+      "password": "12345678",
+      "from": "info@rds.aero"
+    }
+  }
+  
