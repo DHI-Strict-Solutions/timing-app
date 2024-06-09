@@ -50,29 +50,12 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Завантажити артефакт збірки
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          # Ім'я артефакту
-          name: artifact
-          # Файл, директорія або шаблон зірочки, що описує, що завантажити
-          path: ./_site
-          # Бажана поведінка, якщо файли не знайдено за вказаним шляхом.
-          if-no-files-found: warn
-          # Тривалість, після якої артефакт буде видалено в днях. 0 означає використання стандартного збереження.
-          retention-days: 1
-          # Рівень стиснення для Zlib, який застосовується до архіву артефакту. Значення може варіюватися від 0 до 9: - 0: Без стиснення - 1: Найвища швидкість - 6: Стандартне стиснення (як у GNU Gzip) - 9: Найкраще стиснення
-          compression-level: 6
-          # Якщо true, артефакт з відповідним ім'ям буде видалено перед завантаженням нового. Якщо false, дія не вдасться, якщо артефакт з даним ім'ям вже існує. Не вдається, якщо артефакт не існує.
-          overwrite: false
-
       - name: Налаштування середовища Node.js
         uses: actions/setup-node@v4.0.2
         with:
           always-auth: false
           node-version: '14.x'
           architecture: x64
- 
 
       - name: Закриття старих питань
         uses: actions/stale@v9.0.0
@@ -95,3 +78,6 @@ jobs:
         with:
           file: 'package.json'
           fields: '{"version": "1.0.1"}'
+
+      - name: Maven Dependency Tree Dependency Submission
+        uses: advanced-security/maven-dependency-submission-action@v4.0.3
