@@ -206,4 +206,13 @@ jobs:
   # You may pin to the exact commit or the version.
   # uses: mikeal/bundle-size-action@a2055271c672d7aa232c6c02957df515cf5c2cc5
   uses: mikeal/bundle-size-action@1.0.0
+                      - name: Update Json File
+  # You may pin to the exact commit or the version.
+  # uses: restackio/update-json-file-action@6f50afee9a03a456a30cd574123db793319f7544
+  uses: restackio/update-json-file-action@2.1
+  with:
+    # file name/path to edit. e.g 'package.json'
+    file: 
+    # fields to edit. can be nested fields. example: {'a.b.c[0]': 'value_here', 'z.x': 'value_here'}
+    fields: 
           
