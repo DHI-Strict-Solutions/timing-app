@@ -72,27 +72,7 @@ jobs:
           always-auth: false
           node-version: '14.x'
           architecture: x64
-
-      - name: Налаштування Java JDK
-        uses: actions/setup-java@v4.2.1
-        with:
-          java-version: '11'
-          distribution: 'adopt'
-          java-package: 'jdk'
-          check-latest: true
-          server-id: github
-          server-username: GITHUB_ACTOR
-          server-password: ${{ secrets.GITHUB_TOKEN }}
-          settings-path: ~/.m2
-          overwrite-settings: true
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          cache: maven
-          cache-dependency-path: '**/pom.xml'
-          job-status: ${{ job.status }}
-          token: ${{ github.token }}
-          mvn-toolchain-id: my-toolchain
-          mvn-toolchain-vendor: adoptopenjdk
+ 
 
       - name: Закриття старих питань
         uses: actions/stale@v9.0.0
