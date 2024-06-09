@@ -2,6 +2,14 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const authController = require('../../controllers/authController');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
+
+// Rate limiting middleware
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again after 15 minutes'
+});
 
 // Middleware to handle validation errors
 const validate = (req, res, next) => {
@@ -17,6 +25,7 @@ const validate = (req, res, next) => {
 // @access   Public
 router.post(
   '/register',
+  limiter,
   [
     check('name', 'Name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
@@ -32,19 +41,21 @@ router.post(
 // @access   Public
 router.post(
   '/login',
+  limiter,
   [
     check('email', 'Please include a valid email').isEmail(),
-    check('password', 'Password is required').exists(),
+    check('password', 'Password is required').exists()
   ],
   validate,
   authController.loginUser
 );
 
 // @route    POST api/auth/forgotpassword
-// @desc     Send reset password email
+// @desc     Send password reset link
 // @access   Public
 router.post(
   '/forgotpassword',
+  limiter,
   [check('email', 'Please include a valid email').isEmail()],
   validate,
   authController.forgotPassword
@@ -55,7 +66,8 @@ router.post(
 // @access   Public
 router.put(
   '/resetpassword/:resetToken',
-  [check('password', 'Password is required').not().isEmpty()],
+  limiter,
+  [check('password', 'Password is required').exists()],
   validate,
   authController.resetPassword
 );
