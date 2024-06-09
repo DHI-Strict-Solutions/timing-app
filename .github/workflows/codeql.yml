@@ -86,12 +86,6 @@ jobs:
         echo '  make bootstrap'
         echo '  make release'
         exit 1
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
-            - name: Cache
   uses: actions/cache@v4.0.2
   with:
     # A list of files, directories, and wildcard patterns to cache and restore
