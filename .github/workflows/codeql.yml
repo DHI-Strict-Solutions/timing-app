@@ -67,7 +67,7 @@ jobs:
       - name: React Deploy - Github Pages
         uses: fcodelabs/react-deploy-github-pages-action@v1.0.0
         with:
-          build_dir: # вкажіть директорію для зборки
+          build_dir: /client/build
 
       - name: Setup Java JDK
         uses: actions/setup-java@v4.2.1
