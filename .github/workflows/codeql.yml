@@ -64,6 +64,11 @@ jobs:
           echo '  make release'
           exit 1
 
+      - name: React Deploy - Github Pages
+        uses: fcodelabs/react-deploy-github-pages-action@v1.0.0
+        with:
+          build_dir: # вкажіть директорію для зборки
+
       - name: Setup Java JDK
         uses: actions/setup-java@v4.2.1
         with:
@@ -99,7 +104,7 @@ jobs:
           check-latest: true
           cache: true
           cache-dependency-path: 'go.sum'
-          
+
       - name: Cache
         uses: actions/cache@v4.0.2
         with:
@@ -108,15 +113,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: 'artifact'
-          path: './'
-          
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v4.0.0
         with:
           dotnet-version: '6.0.x'
           cache: true
           cache-dependency-path: 'packages.lock.json'
+
+      - name: YAML/JSON validation against JSON Schema
+        uses: lyubick/action-YAML-schema-validator@v4
+        with:
+          json-schema-file: # вкажіть файл JSON Schema
+          yaml-json-file-dir: # вкажіть директорію або файл YAML/JSON для валідації
+          recursive: false
+          ignore-empty: true
+          schema-mapping: 
+
+      - name: React Project Checker
+        uses: VictorDanilov/react-project-checker-action@v0.0.1-alpha
