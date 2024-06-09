@@ -1,15 +1,21 @@
+const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
 const config = require('config');
+const sanitize = require('mongo-sanitize');
 
 // Register User
 exports.registerUser = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const { name, email, password, role } = req.body;
 
   try {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email: sanitize(email) });
 
     if (user) {
       return res.status(400).json({ msg: 'User already exists' });
@@ -53,7 +59,7 @@ exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email: sanitize(email) });
 
     if (!user) {
       return res.status(400).json({ msg: 'Invalid Credentials' });
@@ -91,7 +97,7 @@ exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   try {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email: sanitize(email) });
 
     if (!user) {
       return res.status(400).json({ msg: 'Invalid Email' });
@@ -136,7 +142,7 @@ exports.resetPassword = async (req, res) => {
   try {
     const decoded = jwt.verify(resetToken, config.get('jwtSecret'));
 
-    let user = await User.findById(decoded.id);
+    let user = await User.findById(sanitize(decoded.id));
 
     if (!user) {
       return res.status(400).json({ msg: 'Invalid Token' });
