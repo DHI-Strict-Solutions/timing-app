@@ -38,10 +38,8 @@ jobs:
         with:
           # Upload entire repository
           path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-            - name: Setup Go environment
+          
+      - name: Setup Go environment
   uses: actions/setup-go@v5.0.1
   with:
     # The Go version to download (if necessary) and use. Supports semver spec and ranges. Be sure to enclose this option in single quotation marks.
@@ -59,3 +57,6 @@ jobs:
     # Target architecture for Go to use. Examples: x86, x64. Will use system architecture by default.
     architecture: # optional
           
+ - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
