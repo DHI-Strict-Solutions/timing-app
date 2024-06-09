@@ -104,9 +104,9 @@ jobs:
     lookup-only: # optional, default is false
     # Run the post step to save the cache even if another step before fails
     save-always: # optional, default is false
-                      - name: Setup Java JDK
-  uses: actions/setup-java@v4.2.1
-  with:
+    - name: Setup Java JDK
+    uses: actions/setup-java@v4.2.1
+    with:
     # The Java version to set up. Takes a whole or semver Java version. See examples of supported syntax in README file
     java-version: # optional
     # The path to the `.java-version` file. See examples of supported syntax in README file
