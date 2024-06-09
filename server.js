@@ -1,21 +1,24 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 
-// Переконайтеся, що 'app' не оголошено двічі
-let app;
-if (!global.hasOwnProperty('app')) {
-  global.app = express();
-  app = global.app;
-} else {
-  app = global.app;
-}
+const app = express();
 
 // Connect Database
 connectDB();
 
 // Init Middleware
 app.use(express.json({ extended: false }));
+
+// Apply rate limiting to all requests
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  message: 'Too many requests from this IP, please try again later.'
+});
+
+app.use(limiter);
 
 // Define Routes
 app.use('/api/auth', require('./routes/api/auth'));
@@ -24,24 +27,6 @@ app.use('/api/schedules', require('./routes/api/schedules'));
 app.use('/api/availability', require('./routes/api/availability'));
 app.use('/api/reports', require('./routes/api/reports'));
 
-// Check if the PORT variable has already been declared
-if (!global.PORT) {
-  global.PORT = process.env.PORT || 5001;
-}
+const PORT = process.env.PORT || 5001;
 
-// Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static('client/build'));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
-
-// Handle unknown routes
-app.use((req, res, next) => {
-  res.status(404).json({ msg: 'Route not found' });
-});
-
-app.listen(global.PORT, () => console.log(`Server started on port ${global.PORT}`));
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
