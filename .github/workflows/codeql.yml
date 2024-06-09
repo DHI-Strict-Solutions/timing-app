@@ -43,6 +43,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Verify pom.xml exists
+        run: |
+          if [ ! -f pom.xml ]; then
+            echo "Error: pom.xml not found!"
+            exit 1
+          fi
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
